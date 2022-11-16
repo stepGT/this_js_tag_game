@@ -7,4 +7,13 @@ html(lang="ru")
         link(rel="stylesheet" href="/css/reset.css")
         link(rel="stylesheet" href="/css/index.css")
     body
+        - var values = new Array(16).fill(0).map((_, ind) => ++ind);
+        .page
+            h1 Tag Game
+            .tag
+                each val in values
+                    button.item
+                        span.itemVal=val
+            button.button Shift
+
         script(src="/js/index.js")
