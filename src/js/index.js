@@ -1,6 +1,8 @@
 const containerNode = document.getElementById('tag');
 const itemsNodes = Array.from(containerNode.querySelectorAll('.item'));
 const countItems = 16;
+// Hide 16 element
+itemsNodes[countItems - 1].style.display = 'none';
 //
 if (itemsNodes.length !== countItems) {
   throw new Error(`${countItems} items in HTML!`);
