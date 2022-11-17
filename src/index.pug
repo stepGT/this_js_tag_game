@@ -10,9 +10,9 @@ html(lang="ru")
         - var values = new Array(16).fill(0).map((_, ind) => ++ind);
         .page
             h1 Tag Game
-            .tag
+            .tag#tag
                 each val in values
-                    button.item
+                    button.item(data-matrix-id=val)
                         span.itemVal=val
             button.button Shift
 
