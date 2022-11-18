@@ -39,6 +39,19 @@ const setNodeStyles = (node, x, y) => {
   node.style.transform = `translate3D(${x * shiftPS}%, ${y * shiftPS}%, 0)`;
 };
 
-const matrix = getMatrix(itemsNodes.map((item) => Number(item.dataset.matrixId)));
+const shuffleArray = (arr) => {
+  return arr
+    .map((value) => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+};
+
+let matrix = getMatrix(itemsNodes.map((item) => Number(item.dataset.matrixId)));
 
 setPositionItems(matrix);
+
+document.getElementById('shuffle').addEventListener('click', () => {
+  const shuffledArray = shuffleArray(matrix.flat());
+  matrix = getMatrix(shuffledArray);
+  setPositionItems(matrix);
+});
