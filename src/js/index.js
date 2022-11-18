@@ -46,6 +46,27 @@ const shuffleArray = (arr) => {
     .map(({ value }) => value);
 };
 
+const findCoordByNumber = (number, matrix) => {
+  for (let y = 0; y < matrix.length; y++) {
+    for (let x = 0; x < matrix[y].length; x++) {
+      if (matrix[y][x] === number) return { x, y };
+    }
+  }
+  return null;
+};
+
+const isValidToSwap = (coord1, coord2) => {
+  const diffX = Math.abs(coord1.x - coord2.x);
+  const diffY = Math.abs(coord1.y - coord2.y);
+  return (diffX === 1 || diffY === 1) && (coord1.x === coord2.x || coord1.y === coord2.y);
+};
+
+const swap = (coord1, coord2, matrix) => {
+  const coord1Number = matrix[coord1.y][coord1.x];
+  matrix[coord1.y][coord1.x] = matrix[coord2.y][coord2.x];
+  matrix[coord2.y][coord2.x] = coord1Number;
+};
+
 let matrix = getMatrix(itemsNodes.map((item) => Number(item.dataset.matrixId)));
 
 setPositionItems(matrix);
@@ -54,4 +75,18 @@ document.getElementById('shuffle').addEventListener('click', () => {
   const shuffledArray = shuffleArray(matrix.flat());
   matrix = getMatrix(shuffledArray);
   setPositionItems(matrix);
+});
+
+containerNode.addEventListener('click', (e) => {
+  const buttonNode = e.target.closest('button');
+  if (!buttonNode) return;
+  const buttonNumber = Number(buttonNode.dataset.matrixId);
+  const buttonCoords = findCoordByNumber(buttonNumber, matrix);
+  const blankCoords = findCoordByNumber(countItems, matrix);
+  const isValid = isValidToSwap(buttonCoords, blankCoords);
+  //
+  if (isValid) {
+    swap(blankCoords, buttonCoords, matrix);
+    setPositionItems(matrix);
+  }
 });
