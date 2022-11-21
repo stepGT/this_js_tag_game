@@ -90,3 +90,39 @@ containerNode.addEventListener('click', (e) => {
     setPositionItems(matrix);
   }
 });
+
+window.addEventListener('keydown', (e) => {
+  if (!e.key.includes('Arrow')) return;
+  const blankCoords = findCoordByNumber(countItems, matrix);
+  console.log(blankCoords);
+  const buttonCoords = {
+    x: blankCoords.x,
+    y: blankCoords.y,
+  };
+  const direction = e.key.split('Arrow')[1].toLocaleLowerCase();
+  //
+  switch (direction) {
+    case 'up':
+      buttonCoords.y += 1;
+      break;
+    case 'down':
+      buttonCoords.y -= 1;
+      break;
+    case 'left':
+      buttonCoords.x += 1;
+      break;
+    case 'right':
+      buttonCoords.x -= 1;
+      break;
+  }
+  if (
+    buttonCoords.y >= matrix.length ||
+    buttonCoords.y < 0 ||
+    buttonCoords.x >= matrix.length ||
+    buttonCoords.x < 0
+  ) {
+    return;
+  }
+  swap(blankCoords, buttonCoords, matrix);
+  setPositionItems(matrix);
+});
