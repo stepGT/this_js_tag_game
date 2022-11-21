@@ -1,6 +1,7 @@
 const containerNode = document.getElementById('tag');
 const itemsNodes = Array.from(containerNode.querySelectorAll('.item'));
 const countItems = 16;
+const winFlatArray = new Array(16).fill(0).map((_, ind) => ++ind);
 // Hide 16 element
 itemsNodes[countItems - 1].style.display = 'none';
 //
@@ -61,10 +62,31 @@ const isValidToSwap = (coord1, coord2) => {
   return (diffX === 1 || diffY === 1) && (coord1.x === coord2.x || coord1.y === coord2.y);
 };
 
+const isWon = (matrix) => {
+  const flatMatrix = matrix.flat();
+  //
+  for (let i = 0; i < winFlatArray.length; i++) {
+    if (flatMatrix[i] !== winFlatArray[i]) {
+      return false;
+    }
+  }
+  return true;
+};
+
+const addWonClass = () => {
+  setTimeout(() => {
+    containerNode.classList.add('tagWin');
+    setTimeout(() => {
+      containerNode.classList.remove('tagWin');
+    }, 1000);
+  }, 200);
+};
+
 const swap = (coord1, coord2, matrix) => {
   const coord1Number = matrix[coord1.y][coord1.x];
   matrix[coord1.y][coord1.x] = matrix[coord2.y][coord2.x];
   matrix[coord2.y][coord2.x] = coord1Number;
+  if (isWon(matrix)) addWonClass();
 };
 
 let matrix = getMatrix(itemsNodes.map((item) => Number(item.dataset.matrixId)));
