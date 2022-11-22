@@ -9,24 +9,28 @@ if (itemsNodes.length !== countItems) {
   throw new Error(`${countItems} items in HTML!`);
 }
 
-const findValidCoords = ({ blankCoords, matrix }) => {
+const findValidCoords = ({ blankCoords, matrix, blockedCoords }) => {
   const validCoords = [];
   //
   for (let y = 0; y < matrix.length; y++) {
     for (let x = 0; x < matrix[y].length; x++) {
       if (isValidToSwap({ x, y }, blankCoords)) {
-        validCoords.push({ x, y });
+        if (!blockedCoords || !(blockedCoords.x === x && blankCoords.y === y)) {
+          validCoords.push({ x, y });
+        }
       }
     }
   }
   return validCoords;
 };
 
+let blockedCoords = null;
 const randomSwap = (matrix) => {
   const blankCoords = findCoordByNumber(countItems, matrix);
-  const validCoords = findValidCoords({ blankCoords, matrix });
+  const validCoords = findValidCoords({ blankCoords, matrix, blockedCoords });
   const swapCoords = validCoords[Math.floor(Math.random() * validCoords.length)];
   swap(blankCoords, swapCoords, matrix);
+  blockedCoords = blankCoords;
 };
 
 const getMatrix = (arr) => {
@@ -147,7 +151,6 @@ containerNode.addEventListener('click', (e) => {
 window.addEventListener('keydown', (e) => {
   if (!e.key.includes('Arrow')) return;
   const blankCoords = findCoordByNumber(countItems, matrix);
-  console.log(blankCoords);
   const buttonCoords = {
     x: blankCoords.x,
     y: blankCoords.y,
