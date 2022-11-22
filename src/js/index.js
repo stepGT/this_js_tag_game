@@ -27,7 +27,6 @@ const randomSwap = (matrix) => {
   const validCoords = findValidCoords({ blankCoords, matrix });
   const swapCoords = validCoords[Math.floor(Math.random() * validCoords.length)];
   swap(blankCoords, swapCoords, matrix);
-  setPositionItems(matrix);
 };
 
 const getMatrix = (arr) => {
@@ -114,8 +113,21 @@ let matrix = getMatrix(itemsNodes.map((item) => Number(item.dataset.matrixId)));
 
 setPositionItems(matrix);
 
+let timer;
 document.getElementById('shuffle').addEventListener('click', () => {
-  randomSwap(matrix);
+  let shuffleCount = 0;
+  clearInterval(timer);
+  //
+  if (shuffleCount === 0) {
+    timer = setInterval(() => {
+      randomSwap(matrix);
+      setPositionItems(matrix);
+      shuffleCount++;
+      if (shuffleCount >= 50) {
+        clearInterval(timer);
+      }
+    }, 200);
+  }
 });
 
 containerNode.addEventListener('click', (e) => {
