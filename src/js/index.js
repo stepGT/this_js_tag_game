@@ -1,3 +1,4 @@
+const gameNode = document.getElementById('game');
 const containerNode = document.getElementById('tag');
 const itemsNodes = Array.from(containerNode.querySelectorAll('.item'));
 const countItems = 16;
@@ -118,9 +119,11 @@ let matrix = getMatrix(itemsNodes.map((item) => Number(item.dataset.matrixId)));
 setPositionItems(matrix);
 
 let timer;
+const shuffledClassName = 'gameShuffle';
 document.getElementById('shuffle').addEventListener('click', () => {
   let shuffleCount = 0;
   clearInterval(timer);
+  gameNode.classList.add(shuffledClassName);
   //
   if (shuffleCount === 0) {
     timer = setInterval(() => {
@@ -128,6 +131,7 @@ document.getElementById('shuffle').addEventListener('click', () => {
       setPositionItems(matrix);
       shuffleCount++;
       if (shuffleCount >= 50) {
+        gameNode.classList.remove(shuffledClassName);
         clearInterval(timer);
       }
     }, 200);
